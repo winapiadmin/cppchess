@@ -9,15 +9,15 @@ class BaseBoard
         /** Default constructor */
         BaseBoard(const std::optional<std::string> & = STARTING_BOARD_FEN);
 
-        unsigned long long occupied; //!< Member variable "occupied;"
+        unsigned long long occupied=0; //!< Member variable "occupied;"
         unsigned long long occupied_co[2]; //!< Member variable "occupied_co[2];"
-        unsigned long long bishops; //!< Member variable "bishops;"
-        unsigned long long rooks; //!< Member variable "rooks;"
-        unsigned long long queens; //!< Member variable "queens;"
-        unsigned long long pawns; //!< Member variable "pawns;"
-        unsigned long long knights; //!< Member variable "knights;"
-        unsigned long long kings; //!< Member variable "kings;"
-        unsigned long long promoted;
+        unsigned long long bishops=0; //!< Member variable "bishops;"
+        unsigned long long rooks=0; //!< Member variable "rooks;"
+        unsigned long long queens=0; //!< Member variable "queens;"
+        unsigned long long pawns=0; //!< Member variable "pawns;"
+        unsigned long long knights=0; //!< Member variable "knights;"
+        unsigned long long kings=0; //!< Member variable "kings;"
+        unsigned long long promoted=0;
         //Bitboard checkers_mask() const;
         Bitboard attackers_mask(Color, Square) const;
         void reset_board();
@@ -57,7 +57,6 @@ class BaseBoard
 
         void _set_board_fen(std::string);
 
-    private:
 };
 
 #endif // BASEBOARD_H

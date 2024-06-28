@@ -51,27 +51,14 @@
         */
 
     public:
-        static std::string aliases[];
         static std::optional<std::string> uci_variant;
         static std::optional<std::string> xboard_variant;
         static std::string starting_fen;
 
-        static std::optional<std::string> tbw_suffix;
-        static std::optional<std::string> tbz_suffix;
-        static std::optional<std::array<unsigned char, 4>> tbw_magic;
-        static std::optional<std::array<unsigned char, 4>> tbz_magic;
-        static std::optional<std::string> pawnless_tbw_suffix;
-        static std::optional<std::string> pawnless_tbz_suffix;
-        static std::optional<std::array<unsigned char, 4>> pawnless_tbw_magic;
-        static std::optional<std::array<unsigned char, 4>> pawnless_tbz_magic;
-        static bool connected_kings;
-        static bool one_king;
-        static bool captures_compulsory;
-
-        Color turn;
+        Color turn=WHITE;
         /* The side to move (``chess::WHITE`` or ``chess::BLACK``). */
 
-        Bitboard castling_rights;
+        Bitboard castling_rights=0;
         /*
         Bitmask of the rooks with castling rights.
 
@@ -96,7 +83,7 @@
         :func:`~chess::Board::clean_castling_rights()`.
         */
 
-        std::optional<Square> ep_square;
+        std::optional<Square> ep_square=std::nullopt;
         /*
         The potential en passant square on the third or sixth rank or ``std::nullopt``.
 
@@ -104,16 +91,16 @@
         capturing would actually be possible on the next move.
         */
 
-        int fullmove_number;
+        int fullmove_number=1;
         /*
         Counts move pairs. Starts at `1` and is incremented after every move
         of the black side.
         */
 
-        int halfmove_clock;
+        int halfmove_clock=0;
         /* The number of half-moves since the last capture or pawn move. */
 
-        bool chess960;
+        bool chess960=false;
         /*
         Whether the board is in Chess960 mode. In Chess960 castling moves are
         represented as king moves to the corresponding rook square.
@@ -273,8 +260,6 @@
         bool has_queenside_castling_rights(Color) const;
 
         bool has_chess960_castling_rights();
-
-        Status status() const;
 
         bool is_valid() const;
 

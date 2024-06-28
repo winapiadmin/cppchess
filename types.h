@@ -31,10 +31,10 @@
 
     const char RANK_NAMES[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 
-    const std::string STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    #define STARTING_FEN  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     /* The FEN for the standard chess starting position. */
 
-    const std::string STARTING_BOARD_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    #define STARTING_BOARD_FEN  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
     /* The board part of the FEN for the standard chess starting position. */
 
     typedef int Square;
@@ -47,34 +47,6 @@
     {
         return *PIECE_SYMBOLS[piece_type];
     }
-
-    inline std::string piece_name(PieceType piece_type)
-    {
-        return *PIECE_NAMES[piece_type];
-    }
-
-    inline Square parse_square(const std::string &name)
-    {
-        /*
-        Gets the square index for the given square *name*
-        (e.g., ``a1`` returns ``0``).
-
-        :throws: :exc:`std::invalid_argument` if the square name is invalid.
-        */
-        auto it = std::find(std::begin(SQUARE_NAMES), std::end(SQUARE_NAMES), name);
-        if (it == std::end(SQUARE_NAMES))
-        {
-            throw std::invalid_argument("square name is invalid");
-        }
-        return std::distance(SQUARE_NAMES, it);
-    }
-
-    inline std::string square_name(Square square)
-    {
-        /* Gets the name of the square, like ``a3``. */
-        return SQUARE_NAMES[square];
-    }
-
     inline Square square(int file_index, int rank_index)
     {
         /* Gets a square number by file and rank index. */
@@ -111,8 +83,8 @@
     const Square SQUARES_180[] = {square_mirror(0), square_mirror(1), square_mirror(2), square_mirror(3), square_mirror(4), square_mirror(5), square_mirror(6), square_mirror(7), square_mirror(8), square_mirror(9), square_mirror(10), square_mirror(11), square_mirror(12), square_mirror(13), square_mirror(14), square_mirror(15), square_mirror(16), square_mirror(17), square_mirror(18), square_mirror(19), square_mirror(20), square_mirror(21), square_mirror(22), square_mirror(23), square_mirror(24), square_mirror(25), square_mirror(26), square_mirror(27), square_mirror(28), square_mirror(29), square_mirror(30), square_mirror(31), square_mirror(32), square_mirror(33), square_mirror(34), square_mirror(35), square_mirror(36), square_mirror(37), square_mirror(38), square_mirror(39), square_mirror(40), square_mirror(41), square_mirror(42), square_mirror(43), square_mirror(44), square_mirror(45), square_mirror(46), square_mirror(47), square_mirror(48), square_mirror(49), square_mirror(50), square_mirror(51), square_mirror(52), square_mirror(53), square_mirror(54), square_mirror(55), square_mirror(56), square_mirror(57), square_mirror(58), square_mirror(59), square_mirror(60), square_mirror(61), square_mirror(62), square_mirror(63)};
 
     typedef unsigned long long Bitboard;
-    const Bitboard BB_EMPTY = 0;
-    const Bitboard BB_ALL = 0xffff'ffff'ffff'ffff;
+    #define BB_EMPTY  0
+    #define BB_ALL  0xffff'ffff'ffff'ffffULL
 
     const Bitboard BB_SQUARES[] = {
         1ULL << 0,
@@ -182,11 +154,11 @@
     },
                    BB_A1 = 1ULL << 0, BB_B1 = 1ULL << 1, BB_C1 = 1ULL << 2, BB_D1 = 1ULL << 3, BB_E1 = 1ULL << 4, BB_F1 = 1ULL << 5, BB_G1 = 1ULL << 6, BB_H1 = 1ULL << 7, BB_A2 = 1ULL << 8, BB_B2 = 1ULL << 9, BB_C2 = 1ULL << 10, BB_D2 = 1ULL << 11, BB_E2 = 1ULL << 12, BB_F2 = 1ULL << 13, BB_G2 = 1ULL << 14, BB_H2 = 1ULL << 15, BB_A3 = 1ULL << 16, BB_B3 = 1ULL << 17, BB_C3 = 1ULL << 18, BB_D3 = 1ULL << 19, BB_E3 = 1ULL << 20, BB_F3 = 1ULL << 21, BB_G3 = 1ULL << 22, BB_H3 = 1ULL << 23, BB_A4 = 1ULL << 24, BB_B4 = 1ULL << 25, BB_C4 = 1ULL << 26, BB_D4 = 1ULL << 27, BB_E4 = 1ULL << 28, BB_F4 = 1ULL << 29, BB_G4 = 1ULL << 30, BB_H4 = 1ULL << 31, BB_A5 = 1ULL << 32, BB_B5 = 1ULL << 33, BB_C5 = 1ULL << 34, BB_D5 = 1ULL << 35, BB_E5 = 1ULL << 36, BB_F5 = 1ULL << 37, BB_G5 = 1ULL << 38, BB_H5 = 1ULL << 39, BB_A6 = 1ULL << 40, BB_B6 = 1ULL << 41, BB_C6 = 1ULL << 42, BB_D6 = 1ULL << 43, BB_E6 = 1ULL << 44, BB_F6 = 1ULL << 45, BB_G6 = 1ULL << 46, BB_H6 = 1ULL << 47, BB_A7 = 1ULL << 48, BB_B7 = 1ULL << 49, BB_C7 = 1ULL << 50, BB_D7 = 1ULL << 51, BB_E7 = 1ULL << 52, BB_F7 = 1ULL << 53, BB_G7 = 1ULL << 54, BB_H7 = 1ULL << 55, BB_A8 = 1ULL << 56, BB_B8 = 1ULL << 57, BB_C8 = 1ULL << 58, BB_D8 = 1ULL << 59, BB_E8 = 1ULL << 60, BB_F8 = 1ULL << 61, BB_G8 = 1ULL << 62, BB_H8 = 1ULL << 63;
 
-    const Bitboard BB_CORNERS = BB_A1 | BB_H1 | BB_A8 | BB_H8;
-    const Bitboard BB_CENTER = BB_D4 | BB_E4 | BB_D5 | BB_E5;
+    #define BB_CORNERS  BB_A1 | BB_H1 | BB_A8 | BB_H8
+    #define BB_CENTER  BB_D4 | BB_E4 | BB_D5 | BB_E5
 
-    const Bitboard BB_LIGHT_SQUARES = 0x55aa'55aa'55aa'55aa;
-    const Bitboard BB_DARK_SQUARES = 0xaa55'aa55'aa55'aa55;
+    #define BB_LIGHT_SQUARES  0x55aa'55aa'55aa'55aa
+    #define BB_DARK_SQUARES  0xaa55'aa55'aa55'aa55
 
     const Bitboard BB_FILES[] = {
         0x0101'0101'0101'0101ULL << 0,
@@ -212,14 +184,9 @@
     },
                    BB_RANK_1 = 0xffULL << (8 * 0), BB_RANK_2 = 0xffULL << (8 * 1), BB_RANK_3 = 0xffULL << (8 * 2), BB_RANK_4 = 0xffULL << (8 * 3), BB_RANK_5 = 0xffULL << (8 * 4), BB_RANK_6 = 0xffULL << (8 * 5), BB_RANK_7 = 0xffULL << (8 * 6), BB_RANK_8 = 0xffULL << (8 * 7);
 
-    const Bitboard BB_BACKRANKS = BB_RANK_1 | BB_RANK_8;
+    #define BB_BACKRANKS  BB_RANK_1 | BB_RANK_8
 
-
-    inline int lsb(Bitboard bb)
-    {
-        return std::numeric_limits<Bitboard>::digits - std::countl_zero(bb & -bb) - 1;
-    }
-
+    #define lsb(bb) std::numeric_limits<Bitboard>::digits - std::countl_zero(bb & -bb) - 1
     inline std::vector<Square> scan_forward(Bitboard bb)
     {
         std::vector<Square> iter;
@@ -231,11 +198,7 @@
         }
         return iter;
     }
-
-    inline int msb(Bitboard bb)
-    {
-        return std::numeric_limits<Bitboard>::digits - std::countl_zero(bb) - 1;
-    }
+    #define msb(bb)std::numeric_limits<Bitboard>::digits - std::countl_zero(bb) - 1
 
     inline std::vector<Square> scan_reversed(Bitboard bb)
     {
@@ -290,108 +253,29 @@
         bb = bb ^ (t ^ (t >> 9));
         return bb;
     }
+#define shift_down(b) b>>8
+#define shift_up(b) (b << 8) & BB_ALL
 
-    inline Bitboard shift_down(Bitboard b)
-    {
-        return b >> 8;
-    }
-
-    inline Bitboard shift_2_down(Bitboard b)
-    {
-        return b >> 16;
-    }
-
-    inline Bitboard shift_up(Bitboard b)
-    {
-        return (b << 8) & BB_ALL;
-    }
-
-    inline Bitboard shift_2_up(Bitboard b)
-    {
-        return (b << 16) & BB_ALL;
-    }
-
-    inline Bitboard shift_right(Bitboard b)
-    {
-        return (b << 1) & ~BB_FILE_A & BB_ALL;
-    }
-
-    inline Bitboard shift_2_right(Bitboard b)
-    {
-        return (b << 2) & ~BB_FILE_A & ~BB_FILE_B & BB_ALL;
-    }
-
-    inline Bitboard shift_left(Bitboard b)
-    {
-        return (b >> 1) & ~BB_FILE_H;
-    }
-
-    inline Bitboard shift_2_left(Bitboard b)
-    {
-        return (b >> 2) & ~BB_FILE_G & ~BB_FILE_H;
-    }
-
-    inline Bitboard shift_up_left(Bitboard b)
-    {
-        return (b << 7) & ~BB_FILE_H & BB_ALL;
-    }
-
-    inline Bitboard shift_up_right(Bitboard b)
-    {
-        return (b << 9) & ~BB_FILE_A & BB_ALL;
-    }
-
-    inline Bitboard shift_down_left(Bitboard b)
-    {
-        return (b >> 9) & ~BB_FILE_H;
-    }
-
-    inline Bitboard shift_down_right(Bitboard b)
-    {
-        return (b >> 7) & ~BB_FILE_A;
-    }
-    enum class Status
-    {
-        VALID = 0,
-        NO_WHITE_KING = 1 << 0,
-        NO_BLACK_KING = 1 << 1,
-        TOO_MANY_KINGS = 1 << 2,
-        TOO_MANY_WHITE_PAWNS = 1 << 3,
-        TOO_MANY_BLACK_PAWNS = 1 << 4,
-        PAWNS_ON_BACKRANK = 1 << 5,
-        TOO_MANY_WHITE_PIECES = 1 << 6,
-        TOO_MANY_BLACK_PIECES = 1 << 7,
-        BAD_CASTLING_RIGHTS = 1 << 8,
-        INVALID_EP_SQUARE = 1 << 9,
-        OPPOSITE_CHECK = 1 << 10,
-        EMPTY = 1 << 11,
-        RACE_CHECK = 1 << 12,
-        RACE_OVER = 1 << 13,
-        RACE_MATERIAL = 1 << 14,
-        TOO_MANY_CHECKERS = 1 << 15,
-        IMPOSSIBLE_CHECK = 1 << 16
-    };
-
-    const Status STATUS_VALID = Status::VALID;
-    const Status STATUS_NO_WHITE_KING = Status::NO_WHITE_KING;
-    const Status STATUS_NO_BLACK_KING = Status::NO_BLACK_KING;
-    const Status STATUS_TOO_MANY_KINGS = Status::TOO_MANY_KINGS;
-    const Status STATUS_TOO_MANY_WHITE_PAWNS = Status::TOO_MANY_WHITE_PAWNS;
-    const Status STATUS_TOO_MANY_BLACK_PAWNS = Status::TOO_MANY_BLACK_PAWNS;
-    const Status STATUS_PAWNS_ON_BACKRANK = Status::PAWNS_ON_BACKRANK;
-    const Status STATUS_TOO_MANY_WHITE_PIECES = Status::TOO_MANY_WHITE_PIECES;
-    const Status STATUS_TOO_MANY_BLACK_PIECES = Status::TOO_MANY_BLACK_PIECES;
-    const Status STATUS_BAD_CASTLING_RIGHTS = Status::BAD_CASTLING_RIGHTS;
-    const Status STATUS_INVALID_EP_SQUARE = Status::INVALID_EP_SQUARE;
-    const Status STATUS_OPPOSITE_CHECK = Status::OPPOSITE_CHECK;
-    const Status STATUS_EMPTY = Status::EMPTY;
-    const Status STATUS_RACE_CHECK = Status::RACE_CHECK;
-    const Status STATUS_RACE_OVER = Status::RACE_OVER;
-    const Status STATUS_RACE_MATERIAL = Status::RACE_MATERIAL;
-    const Status STATUS_TOO_MANY_CHECKERS = Status::TOO_MANY_CHECKERS;
-    const Status STATUS_IMPOSSIBLE_CHECK = Status::IMPOSSIBLE_CHECK;
+    #define STATUS_VALID  0
+    #define STATUS_NO_WHITE_KING  1 << 0
+    #define STATUS_NO_BLACK_KING  1<<1
+    #define STATUS_TOO_MANY_KINGS  1<<2
+    #define STATUS_TOO_MANY_WHITE_PAWNS  1<<3
+    #define STATUS_TOO_MANY_BLACK_PAWNS  1<<4
+    #define STATUS_PAWNS_ON_BACKRANK 1<<5
+    #define STATUS_TOO_MANY_WHITE_PIECES  1<<6
+    #define STATUS_TOO_MANY_BLACK_PIECES  1<<7
+    #define STATUS_BAD_CASTLING_RIGHTS  1<<8
+    #define STATUS_INVALID_EP_SQUARE  1<<9
+    #define STATUS_OPPOSITE_CHECK  1<<10
+    #define STATUS_EMPTY  1<<11
+    #define STATUS_RACE_CHECK  1<<12
+    #define STATUS_RACE_OVER  1<<13
+    #define STATUS_RACE_MATERIAL  1<<14
+    #define STATUS_TOO_MANY_CHECKERS  1<<15
+    #define STATUS_IMPOSSIBLE_CHECK  1<<16
     const std::regex SAN_REGEX(R"(^([NBKRQ])?([a-h])?([1-8])?[\-x]?([a-h][1-8])(=?[nbrqkNBRQK])?[\+#]?$)");
 
     const std::regex FEN_CASTLING_REGEX(R"(^(?:-|[KQABCDEFGH]{0,2}[kqabcdefgh]{0,2})$)");
-    inline int popcount(Bitboard bb){ return std::bitset<64>(bb).count(); };
+    #define popcount(bb) __builtin_popcount(bb)
 #endif // TYPES_H_INCLUDED

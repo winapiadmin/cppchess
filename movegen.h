@@ -23,15 +23,6 @@
     std::vector<std::vector<Bitboard>> _rays();
 
     const std::vector<std::vector<Bitboard>> BB_RAYS = _rays();
-    inline Bitboard ray(Square a, Square b)
-    {
-        return BB_RAYS[a][b];
-    }
-
-    inline Bitboard between(Square a, Square b)
-    {
-        Bitboard bb = BB_RAYS[a][b] & ((BB_ALL << a) ^ (BB_ALL << b));
-        return bb & (bb - 1);
-    }
-
+#define ray(a,b) BB_RAYS[a][b]
+#define between(a,b) BB_RAYS[a][b] & ((BB_ALL << a) ^ (BB_ALL << b)) & (BB_RAYS[a][b] & ((BB_ALL << a) ^ (BB_ALL << b))-1)
 #endif // MOVEGEN_H_INCLUDED

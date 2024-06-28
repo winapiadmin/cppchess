@@ -45,23 +45,9 @@
     }
 
 
-    std::string Board::aliases[] = {"Standard", "Chess", "Classical", "Normal", "Illegal", "From Position"};
     std::optional<std::string> Board::uci_variant = "chess";
     std::optional<std::string> Board::xboard_variant = "normal";
     std::string Board::starting_fen = STARTING_FEN;
-
-    std::optional<std::string> Board::tbw_suffix = ".rtbw";
-    std::optional<std::string> Board::tbz_suffix = ".rtbz";
-    std::optional<std::array<unsigned char, 4>> Board::tbw_magic = {{0x71, 0xe8, 0x23, 0x5d}};
-    std::optional<std::array<unsigned char, 4>> Board::tbz_magic = {{0xd7, 0x66, 0x0c, 0xa5}};
-    std::optional<std::string> Board::pawnless_tbw_suffix = std::nullopt;
-    std::optional<std::string> Board::pawnless_tbz_suffix = std::nullopt;
-    std::optional<std::array<unsigned char, 4>> Board::pawnless_tbw_magic = std::nullopt;
-    std::optional<std::array<unsigned char, 4>> Board::pawnless_tbz_magic = std::nullopt;
-    bool Board::connected_kings = false;
-    bool Board::one_king = true;
-    bool Board::captures_compulsory = false;
-
     Board::Board(const std::optional<std::string> &fen, bool chess960) : BaseBoard(std::nullopt)
     {
         this->chess960 = chess960;
@@ -2085,7 +2071,7 @@
         return false;
     }
 
-    Status Board::status() const
+    bool Board::is_valid() const
     {
         /*
         Gets a bitmask of possible problems with the position.
@@ -2113,71 +2099,72 @@
         :data:`~STATUS_TOO_MANY_CHECKERS`,
         :data:`~STATUS_IMPOSSIBLE_CHECK`.
         */
-        int errors = int(STATUS_VALID);
 
         // There must be at least one piece.
         if (!this->occupied)
         {
-            errors |= int(STATUS_EMPTY);
+            return false;
         }
 
         // There must be exactly one king of each color.
         if (!(this->occupied_co[WHITE] & this->kings))
         {
-            errors |= int(STATUS_NO_WHITE_KING);
+            return false;
         }
         if (!(this->occupied_co[BLACK] & this->kings))
         {
-            errors |= int(STATUS_NO_BLACK_KING);
+            return false;
         }
         if (popcount(this->occupied & this->kings) > 2)
         {
-            errors |= int(STATUS_TOO_MANY_KINGS);
+            return false;
         }
 
         // There can not be more than 16 pieces of any color.
+        /* emitted - custom position
         if (popcount(this->occupied_co[WHITE]) > 16)
         {
-            errors |= int(STATUS_TOO_MANY_WHITE_PIECES);
+            errors |= STATUS_TOO_MANY_WHITE_PIECES;
         }
         if (popcount(this->occupied_co[BLACK]) > 16)
         {
-            errors |= int(STATUS_TOO_MANY_BLACK_PIECES);
+            errors |= STATUS_TOO_MANY_BLACK_PIECES;
         }
-
+        */
         // There can not be more than 8 pawns of any color.
+        /*emitted - custom position
         if (popcount(this->occupied_co[WHITE] & this->pawns) > 8)
         {
-            errors |= int(STATUS_TOO_MANY_WHITE_PAWNS);
+            errors |= STATUS_TOO_MANY_WHITE_PAWNS;
         }
         if (popcount(this->occupied_co[BLACK] & this->pawns) > 8)
         {
-            errors |= int(STATUS_TOO_MANY_BLACK_PAWNS);
+            errors |= STATUS_TOO_MANY_BLACK_PAWNS;
         }
-
+        */
         // Pawns can not be on the back rank.
         if (this->pawns & BB_BACKRANKS)
         {
-            errors |= int(STATUS_PAWNS_ON_BACKRANK);
+            return false;
         }
 
         // Castling rights.
         if (this->castling_rights != this->clean_castling_rights())
         {
-            errors |= int(STATUS_BAD_CASTLING_RIGHTS);
+            return false;
         }
 
         // En passant.
         std::optional<Square> valid_ep_square = this->_valid_ep_square();
         if (this->ep_square != valid_ep_square)
         {
-            errors |= int(STATUS_INVALID_EP_SQUARE);
+            return false;
         }
 
         // Side to move giving check.
         if (this->was_into_check())
         {
-            errors |= int(STATUS_OPPOSITE_CHECK);
+            return false;
         }
 
         // More than the maximum number of possible checkers in the variant.
@@ -2185,11 +2172,11 @@
         Bitboard our_kings = this->kings & this->occupied_co[this->turn] & ~this->promoted;
         if (popcount(checkers) > 2)
         {
-            errors |= int(STATUS_TOO_MANY_CHECKERS);
+            return false;
         }
         else if (popcount(checkers) == 2 && ray(lsb(checkers), msb(checkers)) & our_kings)
         {
-            errors |= int(STATUS_IMPOSSIBLE_CHECK);
+            return false;
         }
         else if (valid_ep_square != std::nullopt)
         {
@@ -2197,23 +2184,12 @@
             {
                 if (ray(checker, *valid_ep_square) & our_kings)
                 {
-                    errors |= int(STATUS_IMPOSSIBLE_CHECK);
-                    break;
+                    return false;
                 }
             }
         }
 
-        return Status(errors);
-    }
-
-    bool Board::is_valid() const
-    {
-        /*
-        Checks some basic validity requirements.
-
-        See :func:`~Board::status()` for details.
-        */
-        return this->status() == STATUS_VALID;
+        return true;
     }
 
     std::vector<Move> Board::generate_legal_moves(Bitboard from_mask, Bitboard to_mask) const
