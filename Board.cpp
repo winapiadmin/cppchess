@@ -3158,6 +3158,29 @@
                                this->has_legal_en_passant() ? *this->ep_square : 64);
     }
 
+    void Board::apply_mirror()
+    {
+        BaseBoard::apply_mirror();
+        this->turn = !this->turn;
+    }
+
+    Board Board::mirror() const
+    {
+        /*
+        Returns a mirrored copy of the board.
+
+        The board is mirrored vertically and piece colors are swapped, so that
+        the position is equivalent modulo color. Also swap the "en passant"
+        square, castling rights and turn.
+
+        Alternatively, :func:`~chess::Board::apply_mirror()` can be used
+        to mirror the board.
+        */
+        Board board = this->copy();
+        board.apply_mirror();
+        return board;
+    }
+
     std::ostream &operator<<(std::ostream &os, Board board)
     {
         if (!board.chess960)

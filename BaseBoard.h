@@ -44,6 +44,12 @@ class BaseBoard
         std::optional<Color> color_at(Square) const;
         BaseBoard copy() const;
         Bitboard pieces_mask(PieceType, Color) const;
+        void apply_transform(const std::function<Bitboard(Bitboard)> &);
+
+        BaseBoard transform(const std::function<Bitboard(Bitboard)> &) const;
+        void apply_mirror();
+
+        BaseBoard mirror() const;
     protected:
         void _reset_board();
 

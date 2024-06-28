@@ -2,7 +2,7 @@
 //
 #include <iostream>
 #include "Board.h"
-//#include "eval.h"
+#include "eval.h"
 #include <chrono>
 using namespace std;
 void printBitboard(Bitboard bb)

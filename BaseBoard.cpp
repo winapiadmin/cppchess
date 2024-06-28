@@ -613,3 +613,25 @@ Bitboard BaseBoard::attackers_mask(Color color, Square square) const
 
         return bb & this->occupied_co[color];
     }
+
+    void BaseBoard::apply_mirror()
+    {
+        this->apply_transform(flip_vertical);
+        std::swap(this->occupied_co[WHITE], this->occupied_co[BLACK]);
+    }
+
+    BaseBoard BaseBoard::mirror() const
+    {
+        /*
+        Returns a mirrored copy of the board.
+
+        The board is mirrored vertically and piece colors are swapped, so that
+        the position is equivalent modulo color.
+
+        Alternatively, :func:`~chess::BaseBoard::apply_mirror()` can be used
+        to mirror the board.
+        */
+        BaseBoard board = this->copy();
+        board.apply_mirror();
+        return board;
+    }

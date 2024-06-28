@@ -107,12 +107,9 @@ int phase(Board pos)
 std::vector<Square> get_pawn_positions(const Board& board, Color color)
 {
     std::vector<Square> pawns;
-    for (Square square:SQUARES)
+    for (Square square:scan_reversed(board.pieces_mask(PAWN,color)))
     {
-        if (board.piece_at(square) && board.piece_at(square).value() == Piece(PAWN, color))
-        {
-            pawns.push_back(square);
-        }
+        pawns.push_back(square);
     }
     return pawns;
 }
@@ -287,4 +284,5 @@ int eval(Board board)
         evalu += is_trapped(board, x,!board.turn)*TrappedRook;
     for (Square x:scan_reversed(board.occupied_co[!board.turn]))
         evalu -= is_trapped(board, x,board.turn)*TrappedRook;
+    return evalu;
 }

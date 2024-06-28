@@ -280,6 +280,9 @@
 
         static Board from_chess960_pos(int);
 
+        void apply_mirror();
+
+        Board mirror() const;
     private:
         std::vector<_BoardState> _stack;
 

@@ -23,6 +23,8 @@
         operator std::string() const;
 
         static Piece from_symbol(char);
+        bool operator==(const Piece& p) const
+        {return p.piece_type==this->piece_type&&p.color==this->color;}
     };
 
     std::ostream &operator<<(std::ostream &, const Piece &);
